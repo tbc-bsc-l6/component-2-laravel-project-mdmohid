@@ -53,4 +53,28 @@ class User extends Authenticatable
     {
         return $this->belongsTo(UserRole::class);
     }
+
+
+   
+    public function taughtModules()
+{
+    return $this->hasMany(Module::class, 'teacher_id');
+}
+
+public function enrollments()
+{
+    return $this->hasMany(Enrollment::class);
+}
+
+public function activeEnrollments()
+{
+    return $this->enrollments()->whereNull('completed_at');
+}
+
+public function completedEnrollments()
+{
+    return $this->enrollments()->whereNotNull('completed_at');
+}
+
+
 }
