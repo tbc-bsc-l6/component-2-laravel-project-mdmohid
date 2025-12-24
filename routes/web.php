@@ -47,18 +47,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Admin routes (protected by role middleware)
-    Route::prefix('admin')->middleware('role:Admin')->group(function () {
+    Route::prefix('admin')->middleware('role:admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         // Add more admin routes later (add module, etc.)
     });
 
     // Teacher routes
-    Route::prefix('teacher')->middleware('role:Teacher')->group(function () {
+    Route::prefix('teacher')->middleware('role:teacher')->group(function () {
         Route::get('/dashboard', [TeacherController::class, 'dashboard'])->name('teacher.dashboard');
     });
 
     // Student routes (Old Students can access but not enroll)
-    Route::prefix('student')->middleware('role:Student|Old Student')->group(function () {
+    Route::prefix('student')->middleware('role:student|old_student')->group(function () {
         Route::get('/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
     });
+
+    
+   
+
 });

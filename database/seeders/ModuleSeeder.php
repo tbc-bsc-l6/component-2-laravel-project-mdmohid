@@ -19,7 +19,7 @@ class ModuleSeeder extends Seeder
             'Advanced Web Engineering',
         ];
         foreach ($modules as $module) {
-            \App\Models\Module::create([
+            \App\Models\Module::firstOrCreate([
                 'module' => $module,
             ]);
         }
