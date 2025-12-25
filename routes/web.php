@@ -46,11 +46,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Central dashboard redirect
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Admin routes (protected by role middleware)
+    // // Admin routes (protected by role middleware)
+    // Route::prefix('admin')->middleware('role:admin')->group(function () {
+    //     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    //     // Add more admin routes later (add module, etc.)
+    // });
+
     Route::prefix('admin')->middleware('role:admin')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        // Add more admin routes later (add module, etc.)
-    });
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    // Add this line for creating teachers
+    Route::post('/teachers', [AdminController::class, 'storeTeacher'])->name('admin.teachers.store');
+
+    // Add other admin routes as needed later
+   });
 
     // Teacher routes
     Route::prefix('teacher')->middleware('role:teacher')->group(function () {
