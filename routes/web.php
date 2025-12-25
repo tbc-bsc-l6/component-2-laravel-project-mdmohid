@@ -61,8 +61,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('student')->middleware('role:student|old_student')->group(function () {
         Route::get('/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
     });
-
-    
-   
+ 
 
 });
