@@ -81,19 +81,36 @@
                             <div>
                                 <h3 class="font-medium">{{ $module->module }}</h3>
                                 <p class="text-sm text-gray-500">
-                                    Status: <span class="{{ $module->active ? 'text-green-600' : 'text-red-600' }}">{{ $module->active ? 'Active' : 'Inactive' }}</span>
+                                    Status: <span class="{{ $module->active ? 'text-green-600' : 'text-red-600' }}">{{ $module->active ? 'Available' : 'Unavailable' }}</span>
                                     | Teacher: {{ $module->teacher ? $module->teacher->name : 'None' }}
                                     | Enrolled Students: {{ $module->enrollments->count() }}
                                 </p>
                             </div>
+
+
                             <div class="flex gap-3">
-                                <!-- Toggle Active -->
+
+
+                                {{-- <!-- Toggle Active -->
                                 <form method="PATCH" action="{{ route('admin.modules.toggle', $module->id) }}">
-                                    @csrf @method('PATCH')
+                                    @csrf @method('POST')
                                     <button type="submit" class="text-sm px-4 py-2 rounded font-medium transition-colors {{ $module->active ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' : 'bg-green-100 text-green-800 hover:bg-green-200' }}">
                                         {{ $module->active ? 'Deactivate' : 'Activate' }}
                                     </button>
+                                </form> --}}
+
+                                <!-- Toggle Active -->
+
+                                <form method="POST" action="{{ route('admin.modules.toggle', $module->id) }}"> @csrf
+                                @method('PATCH')
+                                 <button type="submit" class="text-sm px-4 py-2 rounded font-medium transition-colors {{ $module->active ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' : 'bg-green-100 text-green-800 hover:bg-green-200' }}">
+                                {{ $module->active ? 'Unavailable' : 'Available' }}
+                                 </button>
                                 </form>
+     
+                                
+
+
                                 <!-- Assign Teacher -->
                                 <form method="POST" action="{{ route('admin.modules.assign', $module->id) }}" class="flex gap-2">
                                     @csrf
@@ -236,3 +253,5 @@
         </div>
     </div>
 @endsection
+
+
