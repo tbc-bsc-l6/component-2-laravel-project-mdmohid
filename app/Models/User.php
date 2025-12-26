@@ -57,24 +57,24 @@ class User extends Authenticatable
 
    
     public function taughtModules()
-{
-    return $this->hasMany(Module::class, 'teacher_id');
-}
+   {
+     return $this->hasMany(Module::class, 'teacher_id');
+   }
 
-public function enrollments()
-{
-    return $this->hasMany(Enrollment::class);
-}
+   public function enrollments()
+   {
+     return $this->hasMany(Enrollment::class);
+   }
 
-public function activeEnrollments()
-{
-    return $this->enrollments()->whereNull('completed_at');
-}
+   public function activeEnrollments()
+   {
+     return $this->enrollments()->whereNull('completed_at');
+   }
 
-public function completedEnrollments()
-{
-    return $this->enrollments()->whereNotNull('completed_at');
-}
+   public function completedEnrollments()
+   {
+     return $this->enrollments()->whereNotNull('completed_at');
+   }
 
 
 }
