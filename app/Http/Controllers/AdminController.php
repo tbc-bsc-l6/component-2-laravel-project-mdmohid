@@ -95,7 +95,7 @@ class AdminController extends Controller
     public function destroyTeacher($id)
     {
         $teacher = User::findOrFail($id);
-        if ($teacher->userRole()->role !== 'teacher') {
+        if ($teacher->userRole->role !== 'teacher') {
             abort(403, 'This user is not a teacher.');
         }
         $teacher->delete();

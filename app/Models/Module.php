@@ -16,19 +16,19 @@ class Module extends Model
     ];
 
     public function teacher()
-{
-    return $this->belongsTo(User::class, 'teacher_id');
-}
+   {
+     return $this->belongsTo(User::class, 'teacher_id');
+   }
 
-public function enrollments()
-{
-    return $this->hasMany(Enrollment::class);
-}
+   public function enrollments()
+   {
+     return $this->hasMany(Enrollment::class);
+   }
 
-public function activeStudents()
-{
-    return $this->enrollments()->whereNull('completed_at');
-}
+   public function activeStudents()
+   {
+     return $this->enrollments()->whereNull('completed_at');
+   }
 
 }
 
