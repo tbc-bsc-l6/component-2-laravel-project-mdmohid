@@ -103,14 +103,33 @@ class AdminController extends Controller
     return back()->with('success', 'Teacher removed successfully');
   }
 
-  // Attach teacher to module
+  // // Assign teacher to module
+  // public function assignTeacher(Request $request, $id)
+  // {
+  //   $request->validate(['teacher_id' => 'nullable|exists:users,id']);
+  //   $module = Module::findOrFail($id);
+  //   $module->teacher_id = $request->teacher_id;
+  //   $module->save();
+  //   return back()->with('success', 'Teacher assigned successfully');
+  // }
+
+
   public function assignTeacher(Request $request, $id)
   {
     $request->validate(['teacher_id' => 'nullable|exists:users,id']);
     $module = Module::findOrFail($id);
     $module->teacher_id = $request->teacher_id;
+
+    // Set teacher_name
+    if ($request->teacher_id) {
+      $teacher = User::find($request->teacher_id);
+      $module->teacher_name = $teacher->name;
+    } else {
+      $module->teacher_name = null;
+    }
+
     $module->save();
-    return back()->with('success', 'Teacher assigned successfully');
+    return back()->with('success', 'Teacher assigned');
   }
 
   // Remove student from module
