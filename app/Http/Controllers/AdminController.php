@@ -140,16 +140,36 @@ class AdminController extends Controller
     return back()->with('success', 'Student removed from module');
   }
 
+
   // Change user role
+
+  // public function changeRole(Request $request, $id)
+  // {
+  //   $request->validate(['role' => 'required|in:admin,teacher,student,old_student']);
+  //   $user = User::findOrFail($id);
+  //   $roleId = UserRole::where('role', $request->role)->firstOrFail()->id;
+  //   $user->user_role_id = $roleId;
+  //   $user->save();
+  //   return back()->with('success', 'User role updated successfully');
+  // }
+
   public function changeRole(Request $request, $id)
   {
     $request->validate(['role' => 'required|in:admin,teacher,student,old_student']);
     $user = User::findOrFail($id);
-    $roleId = UserRole::where('role', $request->role)->firstOrFail()->id;
-    $user->user_role_id = $roleId;
+
+    $roleRecord = UserRole::where('role', $request->role)->firstOrFail();
+
+    $user->user_role_id = $roleRecord->id;
+    $user->role = $request->role;  // role column saves the user roles
     $user->save();
+
     return back()->with('success', 'User role updated successfully');
   }
+
+
+
+
 
 
   // Toggle module active/inactive
