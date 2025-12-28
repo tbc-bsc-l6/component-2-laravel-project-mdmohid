@@ -76,4 +76,19 @@ class User extends Authenticatable
   {
     return $this->enrollments()->whereNotNull('completed_at');
   }
+
+
+
+  //Automatically set the 'role' column when 'user_role_id' is set.
+  public static function boot()
+  {
+    parent::boot();
+
+    static::saving(function ($user) {
+      // If userRole relationship is loaded and role is not set
+      if ($user->userRole && !$user->role) {
+        $user->role = $user->userRole->role;
+      }
+    });
+  }
 }

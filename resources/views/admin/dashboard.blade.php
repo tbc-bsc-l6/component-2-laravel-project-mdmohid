@@ -134,7 +134,9 @@
                                 <ul class="list-disc pl-5">
                                     @foreach ($module->enrollments as $enrollment)
                                         <li class="flex justify-between items-center py-1">
-                                            <span>{{ $enrollment->user->name }} ({{ $enrollment->user->email }})</span>
+                                            {{-- <span>{{ $enrollment->user->name }} ({{ $enrollment->user->email }})</span> --}}
+
+                                            <span>{{ $enrollment->student->name }} ({{ $enrollment->student->email }})</span>
                                             <form method="POST" action="{{ route('admin.enrollments.remove', $enrollment->id) }}">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">Remove</button>

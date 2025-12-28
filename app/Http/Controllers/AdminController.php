@@ -57,7 +57,8 @@ class AdminController extends Controller
     $modules = Module::all();
     $teachers = User::whereHas('userRole', fn($q) => $q->where('role', 'teacher'))->get();
     $users = User::all();
-    $enrollments = Enrollment::with(['user', 'module'])->get(); // For removing students
+    // $enrollments = Enrollment::with(['user', 'module'])->get(); // For removing students
+    $enrollments = Enrollment::with(['student', 'module'])->get();
 
     return view('admin.dashboard', compact('modules', 'teachers', 'users', 'enrollments'));
   }
