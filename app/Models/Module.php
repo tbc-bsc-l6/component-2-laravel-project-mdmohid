@@ -31,4 +31,9 @@ class Module extends Model
   {
     return $this->enrollments()->whereNull('completed_at');
   }
+
+  public function isFull()
+  {
+    return $this->activeStudents()->count() >= 10;
+  }
 }

@@ -22,6 +22,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Module;
+use App\Models\Enrollment;
+use App\Models\User;
 
 class TeacherController extends Controller
 {

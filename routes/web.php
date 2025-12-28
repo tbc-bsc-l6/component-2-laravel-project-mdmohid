@@ -83,5 +83,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
   // Student routes (Old Students can access but not enroll)
   Route::prefix('student')->middleware('role:student|old_student')->group(function () {
     Route::get('/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    // Only current students can enroll
+    Route::post('/enrol/{module}', [StudentController::class, 'enrol'])
+      ->name('student.enrol')
+      ->middleware('role:student');
   });
 });
