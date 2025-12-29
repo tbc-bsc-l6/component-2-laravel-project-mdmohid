@@ -31,10 +31,17 @@ use App\Http\Controllers\ProfileController;
 
 require __DIR__ . '/auth.php';
 
-// Public welcome page
+// //Public welcome page
+// Route::get('/', function () {
+//   return view('welcome');
+// })->name('home');
+
 Route::get('/', function () {
-  return view('welcome');
+  return view('index');
 })->name('home');
+
+
+
 
 // Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
