@@ -173,7 +173,11 @@
                         <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-xl">
                             EAS
                         </div>
-                        <span class="text-xl font-bold text-white">EduAdmin</span>
+                        {{-- <span class="text-xl font-bold text-white">EduAdmin</span> --}}
+                        <div>
+                            <span class="text-xl font-extrabold text-gray-300">EduAdmin</span>
+                            <p class="text-xs text-gray-500 leading-none">Educational Administrative Site</p>
+                        </div>
                     </div>
                     <p class="text-sm text-gray-400 leading-relaxed max-w-sm">
                         A modern educational administrative platform designed to manage modules,
