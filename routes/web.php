@@ -72,8 +72,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('admin')->middleware('role:admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/modules', [AdminController::class, 'storeModule'])->name('admin.modules.store');
-    Route::patch('/modules/{id}/toggle', [AdminController::class, 'toggleActive'])->name('admin.modules.toggle');
-    Route::post('/modules/{id}/assign-teacher', [AdminController::class, 'assignTeacher'])->name('admin.modules.assign');
+    Route::patch('/modules/{module:slug}/toggle', [AdminController::class, 'toggleActive'])->name('admin.modules.toggle');
+    Route::post('/modules/{module:slug}/assign-teacher', [AdminController::class, 'assignTeacher'])->name('admin.modules.assign');
     Route::post('/teachers', [AdminController::class, 'storeTeacher'])->name('admin.teachers.store');
     Route::delete('/teachers/{id}', [AdminController::class, 'destroyTeacher'])->name('admin.teachers.destroy');
     Route::delete('/enrollments/{id}', [AdminController::class, 'removeStudent'])->name('admin.enrollments.remove');

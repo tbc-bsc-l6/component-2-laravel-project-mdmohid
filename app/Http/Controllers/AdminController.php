@@ -52,16 +52,100 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-  public function dashboard()
-  {
-    $modules = Module::all();
-    $teachers = User::whereHas('userRole', fn($q) => $q->where('role', 'teacher'))->get();
-    $users = User::all();
-    // $enrollments = Enrollment::with(['user', 'module'])->get(); // For removing students
-    $enrollments = Enrollment::with(['student', 'module'])->get();
+  // public function dashboard()
+  // {
+  //   $modules = Module::all();
+  //   $teachers = User::whereHas('userRole', fn($q) => $q->where('role', 'teacher'))->get();
+  //   $users = User::all();
+  //   // $enrollments = Enrollment::with(['user', 'module'])->get(); // For removing students
+  //   $enrollments = Enrollment::with(['student', 'module'])->get();
 
-    return view('admin.dashboard', compact('modules', 'teachers', 'users', 'enrollments'));
+  //   return view('admin.dashboard', compact('modules', 'teachers', 'users', 'enrollments'));
+  // }
+
+  /**
+   * Admin Dashboard: modules with search, sort, pagination
+   */
+  // public function dashboard(Request $request)
+  // {
+  //   $query = Module::with(['teacher', 'enrollments']);
+
+  //   //Search by module name
+  //   if ($request->filled('search')) {
+  //     $query->where('module', 'like', '%' . $request->search . '%');
+  //   }
+
+  //   //Sort
+  //   $sort  = $request->get('sort', 'created_at');
+  //   $order = $request->get('order', 'desc');
+  //   $query->orderBy($sort, $order);
+
+  //   //Pagination
+  //   $modules = $query->paginate(10)->withQueryString();
+
+  //   // Teachers list
+  //   $teachers = User::whereHas('userRole', fn($q) => $q->where('role', 'teacher'))->get();
+
+  //   // All users
+  //   $users = User::all();
+
+  //   // Enrollments
+  //   $enrollments = Enrollment::with(['student', 'module'])->get();
+
+  //   return view('admin.dashboard', compact('modules', 'teachers', 'users', 'enrollments'));
+  // }
+
+
+
+
+  public function dashboard(Request $request)
+  {
+    //Modules Tab
+    $moduleQuery = Module::with(['teacher', 'enrollments']);
+    if ($request->filled('module_search')) {
+      $moduleQuery->where('module', 'like', '%' . $request->module_search . '%');
+    }
+    $moduleSort  = $request->get('module_sort', 'created_at');
+    $moduleOrder = $request->get('module_order', 'desc');
+    $modules = $moduleQuery->orderBy($moduleSort, $moduleOrder)->paginate(6)->withQueryString();
+
+    //Students Tab
+    $studentQuery = User::with(['userRole', 'enrollments'])
+      ->whereHas('userRole', fn($q) => $q->where('role', 'student'));
+    if ($request->filled('student_search')) {
+      $studentQuery->where('name', 'like', '%' . $request->student_search . '%')
+        ->orWhere('email', 'like', '%' . $request->student_search . '%');
+    }
+    $studentSort  = $request->get('student_sort', 'name');
+    $studentOrder = $request->get('student_order', 'asc');
+    $students = $studentQuery->orderBy($studentSort, $studentOrder)->paginate(10)->withQueryString();
+
+    // Teachers Tab
+    $teacherQuery = User::with('userRole')
+      ->whereHas('userRole', fn($q) => $q->where('role', 'teacher'));
+    if ($request->filled('teacher_search')) {
+      $teacherQuery->where('name', 'like', '%' . $request->teacher_search . '%')
+        ->orWhere('email', 'like', '%' . $request->teacher_search . '%');
+    }
+    $teacherSort  = $request->get('teacher_sort', 'name');
+    $teacherOrder = $request->get('teacher_order', 'asc');
+    $teachers = $teacherQuery->orderBy($teacherSort, $teacherOrder)->paginate(5)->withQueryString();
+
+    // Users Tab
+    $userQuery = User::with('userRole');
+    if ($request->filled('user_search')) {
+      $userQuery->where('name', 'like', '%' . $request->user_search . '%')
+        ->orWhere('email', 'like', '%' . $request->user_search . '%');
+    }
+    $userSort  = $request->get('user_sort', 'name');
+    $userOrder = $request->get('user_order', 'asc');
+    $users = $userQuery->orderBy($userSort, $userOrder)->paginate(10)->withQueryString();
+
+    //Return View 
+    return view('admin.dashboard', compact('modules', 'students', 'teachers', 'users'));
   }
+
+
 
   // Add new module
   public function storeModule(Request $request)
@@ -115,22 +199,34 @@ class AdminController extends Controller
   // }
 
 
-  public function assignTeacher(Request $request, $id)
+  // public function assignTeacher(Request $request, $id)
+  // {
+  //   $request->validate(['teacher_id' => 'nullable|exists:users,id']);
+  //   $module = Module::findOrFail($id);
+  //   $module->teacher_id = $request->teacher_id;
+
+  //   // Set teacher_name
+  //   if ($request->teacher_id) {
+  //     $teacher = User::find($request->teacher_id);
+  //     $module->teacher_name = $teacher->name;
+  //   } else {
+  //     $module->teacher_name = null;
+  //   }
+
+  //   $module->save();
+  //   return back()->with('success', 'Teacher assigned');
+  // }
+
+  public function assignTeacher(Request $request, Module $module)
   {
     $request->validate(['teacher_id' => 'nullable|exists:users,id']);
-    $module = Module::findOrFail($id);
     $module->teacher_id = $request->teacher_id;
 
     // Set teacher_name
-    if ($request->teacher_id) {
-      $teacher = User::find($request->teacher_id);
-      $module->teacher_name = $teacher->name;
-    } else {
-      $module->teacher_name = null;
-    }
-
+    $module->teacher_name = $request->teacher_id ? User::find($request->teacher_id)->name : null;
     $module->save();
-    return back()->with('success', 'Teacher assigned');
+
+    return back()->with('success', 'Teacher assigned successfully');
   }
 
   // Remove student from module
@@ -169,14 +265,16 @@ class AdminController extends Controller
   }
 
 
-
-
-
-
   // Toggle module active/inactive
-  public function toggleActive($id)
+  // public function toggleActive($id)
+  // {
+  //   $module = Module::findOrFail($id);
+  //   $module->update(['active' => !$module->active]);
+  //   return back()->with('success', 'Module status updated');
+  // }
+
+  public function toggleActive(Module $module)
   {
-    $module = Module::findOrFail($id);
     $module->update(['active' => !$module->active]);
     return back()->with('success', 'Module status updated');
   }
