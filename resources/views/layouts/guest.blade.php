@@ -7,6 +7,7 @@
 
         {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
         <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
+        {{-- <title>EAS</title> --}}
 
         {{-- <title>@yield('title', config('app.name', 'Laravel'))</title> --}}
 
@@ -22,9 +23,8 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
             
                 {{-- <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> 
                 </a> --}}
-                 {{-- Logo --}}
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-xl">
                         EAS
@@ -34,6 +34,7 @@
                         <p class="text-xs text-gray-400 leading-none">Educational Administrative Site</p>
                     </div>
                 </div>
+                 
                 
             
 

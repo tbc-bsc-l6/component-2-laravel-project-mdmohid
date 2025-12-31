@@ -1,6 +1,6 @@
 
 <x-guest-layout>
-    <x-slot name="title">Login | EduAdmin</x-slot>
+    <x-slot name="title">EduAdmin | Login</x-slot>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

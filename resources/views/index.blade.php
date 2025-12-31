@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduAdmin - Digital Educational Admininstrative Site</title>
+    {{-- <title>EduAdmin - Digital Educational Admininstrative Site</title> --}}
+    <title>{{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/css/app.css'])
 </head>
 <body class="bg-gray-50 text-gray-800">
 
     {{-- Navbar --}}
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
+    {{-- <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200"> --}}
+      <nav class="sticky top-0 z-50 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center h-16">
     
@@ -19,7 +21,7 @@
                         EAS
                     </div>
                     <div>
-                        <span class="text-xl font-extrabold text-gray-800">EduAdmin</span>
+                        <span class="text-xl font-extrabold text-gray-300">EduAdmin</span>
                         <p class="text-xs text-gray-500 leading-none">Educational Administrative Site</p>
                     </div>
                 </div>
@@ -33,7 +35,7 @@
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                           class="px-4 py-2 rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition">
+                           class="px-4 py-2 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition">
                             Login
                         </a>
                         <a href="{{ route('register') }}"
