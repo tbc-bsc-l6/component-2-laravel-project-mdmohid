@@ -79,12 +79,12 @@
             {{-- Search & Sort --}}
             <form method="GET" action="{{ route('admin.dashboard') }}" class="flex gap-2 mb-4 flex-wrap">
                 <input type="text" name="student_search" value="{{ request('student_search') }}" placeholder="Search students..." class="flex-1 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <select name="student_sort" class="border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select name="student_sort" class="border border-gray-300 rounded-md px-4 py-2 text-sm bg-white min-w-32 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="name" {{ request('student_sort')=='name' ? 'selected' : '' }}>Name</option>
                     <option value="email" {{ request('student_sort')=='email' ? 'selected' : '' }}>Email</option>
                     <option value="created_at" {{ request('student_sort')=='created_at' ? 'selected' : '' }}>Created At</option>
                 </select>
-                <select name="student_order" class="border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select name="student_order" class="border border-gray-300 rounded-md px-4 py-2 text-sm bg-white min-w-32 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="asc" {{ request('student_order')=='asc' ? 'selected' : '' }}>Asc</option>
                     <option value="desc" {{ request('student_order')=='desc' ? 'selected' : '' }}>Desc</option>
                 </select>
@@ -133,11 +133,11 @@
             {{-- Search & Sort --}}
             <form method="GET" action="{{ route('admin.dashboard') }}" class="flex gap-2 mb-4 flex-wrap">
                 <input type="text" name="module_search" value="{{ request('module_search') }}" placeholder="Search modules..." class="flex-1 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <select name="module_sort" class="border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select name="module_sort" class="border border-gray-300 rounded-md px-8 py-2 text-sm bg-white min-w-32 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="created_at" {{ request('module_sort')=='created_at' ? 'selected' : '' }}>Created At</option>
                     <option value="module" {{ request('module_sort')=='module' ? 'selected' : '' }}>Module Name</option>
                 </select>
-                <select name="module_order" class="border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select name="module_order" class="border border-gray-300 rounded-md px-4 py-2 text-sm bg-white min-w-32 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="asc" {{ request('module_order')=='asc' ? 'selected' : '' }}>Asc</option>
                     <option value="desc" {{ request('module_order')=='desc' ? 'selected' : '' }}>Desc</option>
                 </select>
@@ -173,18 +173,29 @@
                                     {{ $module->active ? 'Make Unavailable' : 'Make Available' }}
                                 </button>
                             </form>
+                            
                             {{-- Assign Teacher --}}
                             <form method="POST" action="{{ route('admin.modules.assign', $module) }}" class="flex gap-2">
                                 @csrf
-                                <select name="teacher_id" class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                {{-- <select name="teacher_id" class="border border-gray-300 rounded px-6 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                     <option value="">None</option>
                                     @foreach($teachers as $teacher)
+                                        <option value="{{ $teacher->id }}" {{ $module->teacher_id == $teacher->id ? 'selected' : '' }}>{{ $teacher->name }}</option>
+                                    @endforeach
+                                </select> --}}
+                                <select name="teacher_id" class="border border-gray-300 rounded px-6 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="">None</option>
+                                    @foreach($allTeachers as $teacher)
                                         <option value="{{ $teacher->id }}" {{ $module->teacher_id == $teacher->id ? 'selected' : '' }}>{{ $teacher->name }}</option>
                                     @endforeach
                                 </select>
                                 <button type="submit" class="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 transition-colors text-sm">Assign</button>
                             </form>
+
                         </div>
+
+                       
+                       
                         {{-- Collapsible Students --}}
                         <div class="mt-2">
                             <button class="toggle-students text-sm text-indigo-600 hover:underline" data-target="students-{{ $module->id }}">
@@ -219,12 +230,12 @@
             {{-- Search & Sort --}}
             <form method="GET" action="{{ route('admin.dashboard') }}" class="flex gap-2 mb-4 flex-wrap">
                 <input type="text" name="teacher_search" value="{{ request('teacher_search') }}" placeholder="Search teachers..." class="flex-1 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <select name="teacher_sort" class="border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select name="teacher_sort" class="border border-gray-300 rounded-md px-4 py-2 text-sm bg-white min-w-32 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="name" {{ request('teacher_sort')=='name' ? 'selected' : '' }}>Name</option>
                     <option value="email" {{ request('teacher_sort')=='email' ? 'selected' : '' }}>Email</option>
                     <option value="created_at" {{ request('teacher_sort')=='created_at' ? 'selected' : '' }}>Created At</option>
                 </select>
-                <select name="teacher_order" class="border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select name="teacher_order" class="border border-gray-300 rounded-md px-4 py-2 text-sm bg-white min-w-32 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="asc" {{ request('teacher_order')=='asc' ? 'selected' : '' }}>Asc</option>
                     <option value="desc" {{ request('teacher_order')=='desc' ? 'selected' : '' }}>Desc</option>
                 </select>
@@ -244,7 +255,8 @@
             {{-- Teachers List --}}
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="divide-y divide-gray-200">
-                    @forelse($teachers as $teacher)
+                    {{-- @forelse($teachers as $teacher) --}}
+                    @forelse($paginatedTeachers as $teacher)
                         <div class="px-4 py-3 flex justify-between items-center">
                             <div>
                                 <p class="font-medium">{{ $teacher->name }}</p>
@@ -255,12 +267,15 @@
                                 <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="return confirm('Are you sure you want to remove this teacher?');">Remove</button>
                             </form>
                         </div>
+                    {{-- @empty
+                        <div class="px-6 py-8 text-center text-gray-500">No teachers found</div>
+                    @endforelse --}}
                     @empty
                         <div class="px-6 py-8 text-center text-gray-500">No teachers found</div>
                     @endforelse
                 </div>
                 <div class="mt-4 px-4">
-                    {{ $teachers->links() }}
+                    {{ $paginatedTeachers->links() }}
                 </div>
             </div>
         </div>
@@ -272,12 +287,12 @@
             {{-- Search & Sort --}}
             <form method="GET" action="{{ route('admin.dashboard') }}" class="flex gap-2 mb-4 flex-wrap">
                 <input type="text" name="user_search" value="{{ request('user_search') }}" placeholder="Search users..." class="flex-1 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <select name="user_sort" class="border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select name="user_sort" class="border border-gray-300 rounded-md px-4 py-2 text-sm bg-white min-w-32 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="name" {{ request('user_sort')=='name' ? 'selected' : '' }}>Name</option>
                     <option value="email" {{ request('user_sort')=='email' ? 'selected' : '' }}>Email</option>
                     <option value="created_at" {{ request('user_sort')=='created_at' ? 'selected' : '' }}>Created At</option>
                 </select>
-                <select name="user_order" class="border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <select name="user_order" class="border border-gray-300 rounded-md px-4 py-2 text-sm bg-white min-w-32 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="asc" {{ request('user_order')=='asc' ? 'selected' : '' }}>Asc</option>
                     <option value="desc" {{ request('user_order')=='desc' ? 'selected' : '' }}>Desc</option>
                 </select>
@@ -295,7 +310,7 @@
                             {{-- Change Role --}}
                             <form method="POST" action="{{ route('admin.users.change-role', $user->id) }}" class="flex gap-2">
                                 @csrf
-                                <select name="role" class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <select name="role" class="border border-gray-300 rounded-md px-4 py-2 text-sm bg-white min-w-40 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                     <option value="admin" {{ $user->userRole->role=='admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="teacher" {{ $user->userRole->role=='teacher' ? 'selected' : '' }}>Teacher</option>
                                     <option value="student" {{ $user->userRole->role=='student' ? 'selected' : '' }}>Student</option>
@@ -317,7 +332,7 @@
 </div>
 
 {{-- Tab & Collapse JS --}}
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Tab switching
         const tabs = document.querySelectorAll('.tab-btn');
@@ -345,6 +360,167 @@
             btn.addEventListener('click', () => {
                 const target = document.getElementById(btn.dataset.target);
                 target.classList.toggle('hidden');
+            });
+        });
+    });
+</script> --}}
+
+{{-- Tab & Collapse JS --}}
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        // Function to activate a tab
+        const activateTab = (tabId) => {
+            // Hide all content
+            contents.forEach(c => c.classList.add('hidden'));
+            // Remove active style from all buttons
+            tabs.forEach(t => t.classList.remove('bg-indigo-500', 'text-white'));
+            // Show selected content
+            document.getElementById(tabId).classList.remove('hidden');
+            // Highlight selected button
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('bg-indigo-500', 'text-white');
+
+            // Save to localStorage
+            localStorage.setItem('adminActiveTab', tabId);
+
+            // === CLEAN URL: Remove all pagination parameters when switching tabs ===
+            const url = new URL(window.location);
+            ['module_page', 'student_page', 'teacher_page', 'user_page'].forEach(param => {
+                url.searchParams.delete(param);
+            });
+            window.history.replaceState({}, '', url);
+        };
+
+        // Attach click event to each tab
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                activateTab(tab.dataset.tab);
+            });
+        });
+
+        // Restore last active tab on page load
+        let activeTab = localStorage.getItem('adminActiveTab') || 'students';
+
+        // If current URL has a page parameter, prioritize the corresponding tab
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('module_page')) activeTab = 'modules';
+        else if (urlParams.has('student_page')) activeTab = 'students';
+        else if (urlParams.has('teacher_page')) activeTab = 'teachers';
+        else if (urlParams.has('user_page')) activeTab = 'users';
+
+        // Activate the correct tab
+        const activeBtn = document.querySelector(`[data-tab="${activeTab}"]`);
+        if (activeBtn) {
+            activateTab(activeTab);
+        } else {
+            tabs[0].click(); // fallback
+        }
+
+        // Collapse toggle for enrolled students
+        const toggles = document.querySelectorAll('.toggle-students');
+        toggles.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = document.getElementById(btn.dataset.target);
+                if (target) {
+                    target.classList.toggle('hidden');
+                    // Optional: change button text
+                    btn.textContent = target.classList.contains('hidden')
+                        ? `${btn.dataset.count || ''} Students Enrolled`
+                        : 'Hide Students';
+                }
+            });
+        });
+    });
+</script> --}}
+
+
+{{-- Tab & Collapse JS --}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        // Mapping between tab ID and its pagination parameter name
+        const tabPageMap = {
+            'students': 'student_page',
+            'modules': 'module_page',
+            'teachers': 'teacher_page',
+            'users': 'user_page'
+        };
+
+        // Function to activate a tab and update URL accordingly
+        const activateTab = (tabId) => {
+            // Hide all content and deactivate buttons
+            contents.forEach(c => c.classList.add('hidden'));
+            tabs.forEach(t => t.classList.remove('bg-indigo-500', 'text-white'));
+
+            // Show selected tab
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
+            activeButton.classList.add('bg-indigo-500', 'text-white');
+
+            // Save to localStorage
+            localStorage.setItem('adminActiveTab', tabId);
+
+            // === Update URL to reflect current tab's page ===
+            const url = new URL(window.location);
+            const pageParam = tabPageMap[tabId];
+
+            // Remove all other tab page parameters
+            Object.values(tabPageMap).forEach(param => {
+                url.searchParams.delete(param);
+            });
+
+            // If the current tab has a page number in URL, keep it; otherwise remove it
+            const currentPage = url.searchParams.get(pageParam);
+            if (!currentPage || currentPage === '1') {
+                url.searchParams.delete(pageParam); // Clean ?page=1
+            }
+
+            // Update URL without reload
+            window.history.replaceState({}, '', url);
+        };
+
+        // Click handler for tabs
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                activateTab(tab.dataset.tab);
+            });
+        });
+
+        // === On page load: Determine which tab should be active ===
+        const urlParams = new URLSearchParams(window.location.search);
+        let activeTab = null;
+
+        // Check if any tab-specific page parameter exists → open that tab
+        if (urlParams.has('module_page')) activeTab = 'modules';
+        else if (urlParams.has('student_page')) activeTab = 'students';
+        else if (urlParams.has('teacher_page')) activeTab = 'teachers';
+        else if (urlParams.has('user_page')) activeTab = 'users';
+
+        // Fallback to localStorage or default
+        if (!activeTab) {
+            activeTab = localStorage.getItem('adminActiveTab') || 'students';
+        }
+
+        // Activate the correct tab
+        const activeBtn = document.querySelector(`[data-tab="${activeTab}"]`);
+        if (activeBtn) {
+            activateTab(activeTab);
+        } else {
+            tabs[0].click(); // fallback to first tab
+        }
+
+        // === Collapse toggle for student/module enrollments ===
+        const toggles = document.querySelectorAll('.toggle-students');
+        toggles.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = document.getElementById(btn.dataset.target);
+                if (target) {
+                    target.classList.toggle('hidden');
+                }
             });
         });
     });

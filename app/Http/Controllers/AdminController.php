@@ -98,51 +98,118 @@ class AdminController extends Controller
 
 
 
+  // public function dashboard(Request $request)
+  // {
+  //   //Modules Tab
+  //   $moduleQuery = Module::with(['teacher', 'enrollments']);
+  //   if ($request->filled('module_search')) {
+  //     $moduleQuery->where('module', 'like', '%' . $request->module_search . '%');
+  //   }
+  //   $moduleSort  = $request->get('module_sort', 'created_at');
+  //   $moduleOrder = $request->get('module_order', 'desc');
+  //   $modules = $moduleQuery->orderBy($moduleSort, $moduleOrder)->paginate(1)->withQueryString();
+
+  //   //Students Tab
+  //   $studentQuery = User::with(['userRole', 'enrollments'])
+  //     ->whereHas('userRole', fn($q) => $q->where('role', 'student'));
+  //   if ($request->filled('student_search')) {
+  //     $studentQuery->where('name', 'like', '%' . $request->student_search . '%')
+  //       ->orWhere('email', 'like', '%' . $request->student_search . '%');
+  //   }
+  //   $studentSort  = $request->get('student_sort', 'name');
+  //   $studentOrder = $request->get('student_order', 'asc');
+  //   $students = $studentQuery->orderBy($studentSort, $studentOrder)->paginate(10)->withQueryString();
+
+  //   // Teachers Tab
+  //   $teacherQuery = User::with('userRole')
+  //     ->whereHas('userRole', fn($q) => $q->where('role', 'teacher'));
+  //   if ($request->filled('teacher_search')) {
+  //     $teacherQuery->where('name', 'like', '%' . $request->teacher_search . '%')
+  //       ->orWhere('email', 'like', '%' . $request->teacher_search . '%');
+  //   }
+  //   $teacherSort  = $request->get('teacher_sort', 'name');
+  //   $teacherOrder = $request->get('teacher_order', 'asc');
+  //   $teachers = $teacherQuery->orderBy($teacherSort, $teacherOrder)->paginate(5)->withQueryString();
+
+  //   // Users Tab
+  //   $userQuery = User::with('userRole');
+  //   if ($request->filled('user_search')) {
+  //     $userQuery->where('name', 'like', '%' . $request->user_search . '%')
+  //       ->orWhere('email', 'like', '%' . $request->user_search . '%');
+  //   }
+  //   $userSort  = $request->get('user_sort', 'name');
+  //   $userOrder = $request->get('user_order', 'asc');
+  //   $users = $userQuery->orderBy($userSort, $userOrder)->paginate(10)->withQueryString();
+
+  //   //Return View 
+  //   return view('admin.dashboard', compact('modules', 'students', 'teachers', 'users'));
+  // }
+
+
+
   public function dashboard(Request $request)
   {
-    //Modules Tab
+    // --- Modules Tab ---
     $moduleQuery = Module::with(['teacher', 'enrollments']);
     if ($request->filled('module_search')) {
       $moduleQuery->where('module', 'like', '%' . $request->module_search . '%');
     }
-    $moduleSort  = $request->get('module_sort', 'created_at');
+    $moduleSort = $request->get('module_sort', 'created_at');
     $moduleOrder = $request->get('module_order', 'desc');
-    $modules = $moduleQuery->orderBy($moduleSort, $moduleOrder)->paginate(6)->withQueryString();
+    $modules = $moduleQuery->orderBy($moduleSort, $moduleOrder)
+      ->paginate(6, ['*'], 'module_page') // Unique page name
+      ->withQueryString();
 
-    //Students Tab
+    // --- Students Tab ---
     $studentQuery = User::with(['userRole', 'enrollments'])
       ->whereHas('userRole', fn($q) => $q->where('role', 'student'));
     if ($request->filled('student_search')) {
       $studentQuery->where('name', 'like', '%' . $request->student_search . '%')
         ->orWhere('email', 'like', '%' . $request->student_search . '%');
     }
-    $studentSort  = $request->get('student_sort', 'name');
+    $studentSort = $request->get('student_sort', 'name');
     $studentOrder = $request->get('student_order', 'asc');
-    $students = $studentQuery->orderBy($studentSort, $studentOrder)->paginate(10)->withQueryString();
+    $students = $studentQuery->orderBy($studentSort, $studentOrder)
+      ->paginate(10, ['*'], 'student_page') // Unique page name
+      ->withQueryString();
 
-    // Teachers Tab
+    // --- Teachers Tab (for listing) ---
     $teacherQuery = User::with('userRole')
       ->whereHas('userRole', fn($q) => $q->where('role', 'teacher'));
     if ($request->filled('teacher_search')) {
       $teacherQuery->where('name', 'like', '%' . $request->teacher_search . '%')
         ->orWhere('email', 'like', '%' . $request->teacher_search . '%');
     }
-    $teacherSort  = $request->get('teacher_sort', 'name');
+    $teacherSort = $request->get('teacher_sort', 'name');
     $teacherOrder = $request->get('teacher_order', 'asc');
-    $teachers = $teacherQuery->orderBy($teacherSort, $teacherOrder)->paginate(5)->withQueryString();
+    $paginatedTeachers = $teacherQuery->orderBy($teacherSort, $teacherOrder)
+      ->paginate(10, ['*'], 'teacher_page') // Unique page name
+      ->withQueryString();
 
-    // Users Tab
+    // --- Users Tab ---
     $userQuery = User::with('userRole');
     if ($request->filled('user_search')) {
       $userQuery->where('name', 'like', '%' . $request->user_search . '%')
         ->orWhere('email', 'like', '%' . $request->user_search . '%');
     }
-    $userSort  = $request->get('user_sort', 'name');
+    $userSort = $request->get('user_sort', 'name');
     $userOrder = $request->get('user_order', 'asc');
-    $users = $userQuery->orderBy($userSort, $userOrder)->paginate(10)->withQueryString();
+    $users = $userQuery->orderBy($userSort, $userOrder)
+      ->paginate(10, ['*'], 'user_page') // Unique page name
+      ->withQueryString();
 
-    //Return View 
-    return view('admin.dashboard', compact('modules', 'students', 'teachers', 'users'));
+    // --- Full list of teachers for the assignment dropdown (NOT paginated) ---
+    $allTeachers = User::whereHas('userRole', fn($q) => $q->where('role', 'teacher'))
+      ->orderBy('name')
+      ->get();
+
+    return view('admin.dashboard', compact(
+      'modules',
+      'students',
+      'paginatedTeachers',
+      'users',
+      'allTeachers'
+    ));
   }
 
 
