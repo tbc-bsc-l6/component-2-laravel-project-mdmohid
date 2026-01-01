@@ -195,24 +195,36 @@
             <p class="text-gray-500 mt-2">Contact your administrator.</p>
         </div>
     @else
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {{-- <div class="grid grid-cols-1 lg:grid-cols-4 gap-6"> --}}
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+
+
             <!-- Left Sidebar: Module List -->
             <div class="lg:col-span-1">
                 <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <!-- Header -->
                     <div class="px-6 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
                         <h2 class="text-lg font-semibold">Your Modules ({{ $modules->count() }})</h2>
                     </div>
+            
+                    <!-- Module Buttons -->
                     <div class="divide-y divide-gray-200">
                         @foreach($modules as $module)
                             <button
                                 type="button"
                                 onclick="showModule(this)"
-                                class="module-btn w-full text-left px-6 py-4 hover:bg-indigo-50 transition-colors"
+                                class="module-btn w-full text-left px-6 py-4
+                                       border-l-4 border-transparent
+                                       hover:bg-indigo-50 transition-colors flex flex-col"
                                 data-target="module-{{ $module->id }}">
+                                
+                                <!-- Module Name -->
                                 <div class="font-medium text-gray-900">{{ $module->module }}</div>
-                                <div class="text-sm text-gray-600 mt-1">
-                                    {{ $module->enrollments->count() }} student{{ $module->enrollments->count() == 1 ? '' : 's' }}
-                                    <span class="ml-2 px-2 py-1 text-xs rounded-full
+                                
+                                <!-- Module Info -->
+                                <div class="text-sm text-gray-500 mt-1 flex items-center justify-between">
+                                    <span>{{ $module->enrollments->count() }} student{{ $module->enrollments->count() == 1 ? '' : 's' }}</span>
+                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full
                                         {{ $module->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                         {{ $module->active ? 'Available' : 'Unavailable' }}
                                     </span>
@@ -222,11 +234,18 @@
                     </div>
                 </div>
             </div>
+            
 
             <!-- Right Side: Module Contents -->
-            <div class="lg:col-span-3">
+            {{-- <div class="lg:col-span-3"> --}}
+              <div class="lg:col-span-3 lg:min-h-[70vh]">
+
                 @foreach($modules as $module)
-                    <div id="module-{{ $module->id }}" class="module-content bg-white shadow-lg rounded-lg overflow-hidden {{ $loop->first ? '' : 'hidden' }}">
+                    {{-- <div id="module-{{ $module->id }}" class="module-content bg-white shadow-lg rounded-lg overflow-hidden {{ $loop->first ? '' : 'hidden' }}"> --}}
+                      <div
+                        id="module-{{ $module->id }}"
+                        class="module-content bg-white shadow-lg rounded-lg overflow-hidden space-y-6 {{ $loop->first ? '' : 'hidden' }}">
+                      
                         <div class="px-6 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
                             <h3 class="text-2xl font-bold">{{ $module->module }}</h3>
                             <div class="mt-2 flex flex-wrap gap-4 text-sm">
@@ -333,12 +352,45 @@
         }
 
         // Remove active style from all buttons
-        document.querySelectorAll('.module-btn').forEach(btn => {
-            btn.classList.remove('bg-indigo-100', 'font-medium', 'border-l-4', 'border-indigo-600');
-        });
+        // document.querySelectorAll('.module-btn').forEach(btn => {
+        //     //btn.classList.remove('bg-indigo-100', 'font-medium', 'border-l-4', 'border-indigo-600');
+        //     btn.classList.remove(
+        //       'bg-indigo-100',
+        //       'font-medium',
+        //       'border-l-4',
+        //       'border-indigo-600',
+        //       'text-indigo-700'
+        //     );
+            
+        // });
 
-        // Add active style to the clicked button (passed as 'this')
-        button.classList.add('bg-indigo-100', 'font-medium', 'border-l-4', 'border-indigo-600');
+        // // Add active style to the clicked button (passed as 'this')
+        // //button.classList.add('bg-indigo-100', 'font-medium', 'border-l-4', 'border-indigo-600');
+        // button.classList.add(
+        //   'bg-indigo-100',
+        //   'font-medium',
+        //   'border-l-4',
+        //   'border-indigo-600',
+        //   'text-indigo-700'
+        // );
+
+        document.querySelectorAll('.module-btn').forEach(btn => {
+            btn.classList.remove(
+                'bg-indigo-100',
+                'font-medium',
+                'border-indigo-600',
+                'text-indigo-700'
+            );
+        });
+        
+        button.classList.add(
+            'bg-indigo-100',
+            'font-medium',
+            'border-indigo-600',
+            'text-indigo-700'
+        );
+        
+        
     }
 
     // Auto-show first module on load
