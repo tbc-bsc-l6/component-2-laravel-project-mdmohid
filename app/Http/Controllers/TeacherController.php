@@ -52,6 +52,10 @@ class TeacherController extends Controller
     $enrollment->completed_at = now();
     $enrollment->save();
 
-    return back()->with('success', 'Grade set successfully');
+    // return back()->with('success', 'Grade set successfully');
+
+    $status = $request->pass ? 'PASS' : 'FAIL';
+
+    return back()->with('success', "Student marked as $status successfully.");
   }
 }
