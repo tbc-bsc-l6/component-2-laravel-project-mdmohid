@@ -75,7 +75,7 @@ class UserFactory extends Factory
     ]);
   }
 
-  // Role states with fixed IDs (matching your DB)
+  // Role states with fixed IDs (matching DB)
   public function admin(): static
   {
     return $this->state(['user_role_id' => 1]);
