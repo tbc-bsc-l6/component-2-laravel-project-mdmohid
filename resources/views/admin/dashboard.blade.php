@@ -54,7 +54,7 @@
     {{-- <div class="flex-1 bg-gray-50 p-6 rounded-r-lg space-y-6 min-h-[70vh]"> --}}
       
     <div class="flex-1 bg-gray-50 rounded-r-lg p-6 min-h-[70vh] flex flex-col">
-      <div class="flex-1 space-y-6">
+      <div class="tab-wrapper flex-1">
           
             
         
@@ -136,9 +136,13 @@
                     </select>
                     <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition-colors">Filter</button>
                 </form>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> --}}
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
+
                     @forelse($students as $student)
-                        <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between hover:shadow-xl transition-shadow">
+                        {{-- <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between hover:shadow-xl transition-shadow"> --}}
+                          <div class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between hover:shadow-xl transition-shadow min-h-[200px]">
+
                             <div>
                                 <h2 class="font-semibold text-lg">{{ $student->name }}</h2>
                                 <p class="text-sm text-gray-500 truncate">{{ $student->email }} • Role: {{ $student->userRole->role }}</p>
