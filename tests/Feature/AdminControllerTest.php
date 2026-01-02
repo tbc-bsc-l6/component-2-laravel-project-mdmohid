@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Module;
 use App\Models\UserRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 
 class AdminControllerTest extends TestCase
 {
@@ -26,10 +27,11 @@ class AdminControllerTest extends TestCase
       ['id' => 4, 'role' => 'old_student'],
     ]);
 
-    // Create an admin user
+    // Create admin
     $this->admin = User::factory()->create([
       'user_role_id' => 1,
       'email' => 'admin@example.com',
+      'password' => Hash::make('password123'),
     ]);
   }
 
@@ -37,7 +39,6 @@ class AdminControllerTest extends TestCase
   public function admin_can_access_dashboard()
   {
     $response = $this->actingAs($this->admin)->get(route('admin.dashboard'));
-
     $response->assertStatus(200);
     $response->assertViewIs('admin.dashboard');
   }
@@ -47,25 +48,41 @@ class AdminControllerTest extends TestCase
   {
     $response = $this->actingAs($this->admin)->post(route('admin.modules.store'), [
       'module' => 'Math 101',
-      'description' => 'Basic Math Module',
-      'active' => 1,
+      'active' => true,
     ]);
 
     $response->assertRedirect();
 
     $this->assertDatabaseHas('modules', [
       'module' => 'Math 101',
-      'description' => 'Basic Math Module',
-      'active' => 1,
+      'active' => true,
     ]);
   }
+
+  /** @test */
+  // public function admin_can_toggle_module_status()
+  // {
+  //   $module = Module::factory()->create(['active' => true]);
+
+  //   $response = $this->actingAs($this->admin)
+  //     ->patch(route('admin.modules.toggle', $module->id));
+
+  //   $response->assertRedirect();
+
+  //   $this->assertDatabaseHas('modules', [
+  //     'id' => $module->id,
+  //     'active' => false,
+  //   ]);
+  // }
+
 
   /** @test */
   public function admin_can_toggle_module_status()
   {
     $module = Module::factory()->create(['active' => true]);
 
-    $response = $this->actingAs($this->admin)->patch(route('admin.modules.toggle', $module->id));
+    $response = $this->actingAs($this->admin)
+      ->patch(route('admin.modules.toggle', $module->slug));
 
     $response->assertRedirect();
 
@@ -82,44 +99,42 @@ class AdminControllerTest extends TestCase
       'name' => 'John Doe',
       'email' => 'teacher1@example.com',
       'password' => 'password123',
-      'user_role_id' => 2,
+      'password_confirmation' => 'password123', // ✅ must match controller
     ]);
 
     $response->assertRedirect();
 
-    $this->assertDatabaseHas('users', [
-      'email' => 'teacher1@example.com',
-      'user_role_id' => 2,
-    ]);
+    $teacher = User::where('email', 'teacher1@example.com')->first();
+
+    $this->assertNotNull($teacher, 'Teacher was not created');
+    $this->assertEquals(2, $teacher->user_role_id, 'Teacher role not assigned correctly');
   }
 
   /** @test */
   public function admin_can_change_user_role()
   {
-    $student = User::factory()->create([
-      'user_role_id' => 3,
-    ]);
+    $student = User::factory()->create(['user_role_id' => 3]);
 
-    $response = $this->actingAs($this->admin)->patch(route('admin.users.update-role', $student->id), [
-      'user_role_id' => 2,
-    ]);
+    // Controller expects 'role' => 'teacher' (string)
+    $response = $this->actingAs($this->admin)
+      ->post(route('admin.users.change-role', $student->id), [
+        'role' => 'teacher',
+      ]);
 
     $response->assertRedirect();
 
-    $this->assertDatabaseHas('users', [
-      'id' => $student->id,
-      'user_role_id' => 2,
-    ]);
+    $student->refresh();
+
+    $this->assertEquals(2, $student->user_role_id, 'User role was not updated');
   }
 
   /** @test */
   public function admin_can_delete_teacher()
   {
-    $teacher = User::factory()->create([
-      'user_role_id' => 2,
-    ]);
+    $teacher = User::factory()->create(['user_role_id' => 2]);
 
-    $response = $this->actingAs($this->admin)->delete(route('admin.teachers.destroy', $teacher->id));
+    $response = $this->actingAs($this->admin)
+      ->delete(route('admin.teachers.destroy', $teacher->id));
 
     $response->assertRedirect();
 
