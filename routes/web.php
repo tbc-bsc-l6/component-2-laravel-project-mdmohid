@@ -28,6 +28,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\AdminApiController;
 
 require __DIR__ . '/auth.php';
 
@@ -95,4 +96,36 @@ Route::middleware(['auth', 'verified'])->group(function () {
       ->name('student.enrol')
       ->middleware('role:student');
   });
+});
+
+
+
+
+
+//API routes
+
+Route::prefix('api')->group(function () {
+
+  Route::get('/test', fn() => response()->json(['message' => 'API works']));
+
+  // Modules
+  Route::get('/modules', [AdminApiController::class, 'modules']);
+  Route::post('/modules', [AdminApiController::class, 'storeModule']);
+  Route::patch('/modules/{module}/toggle', [AdminApiController::class, 'toggleModule']);
+
+  // Teachers
+  Route::get('/teachers', [AdminApiController::class, 'teachers']);
+  Route::post('/teachers', [AdminApiController::class, 'storeTeacher']);
+  Route::delete('/teachers/{id}', [AdminApiController::class, 'destroyTeacher']);
+
+  // Assign teacher
+  Route::post('/modules/{module}/assign-teacher', [AdminApiController::class, 'assignTeacher']);
+
+  // Enrollments / students
+  Route::get('/enrollments', [AdminApiController::class, 'enrollments']);
+  Route::delete('/enrollments/{id}', [AdminApiController::class, 'removeStudent']);
+
+  // Users
+  Route::get('/users', [AdminApiController::class, 'users']);
+  Route::post('/users/{id}/change-role', [AdminApiController::class, 'changeRole']);
 });
