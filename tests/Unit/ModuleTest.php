@@ -10,19 +10,6 @@ class ModuleTest extends TestCase
 {
   //use RefreshDatabase;
 
-  /** @test */
-  // public function it_can_toggle_active_status()
-  // {
-  //   $module = Module::create([
-  //     'module' => 'Math 101',
-  //     'active' => true,
-  //   ]);
-
-  //   // Simulate toggle
-  //   $module->update(['active' => !$module->active]);
-
-  //   $this->assertFalse($module->fresh()->active);
-  // }
 
   /** @test */
   public function it_toggles_active_flag()

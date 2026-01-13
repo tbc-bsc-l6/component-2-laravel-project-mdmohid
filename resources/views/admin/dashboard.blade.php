@@ -1,23 +1,3 @@
-{{-- 
-
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Admin Dashboard
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    Welcome to Admin Dashboard!
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout> --}}
-
 
 @extends('layouts.app')
 @section('title', 'Admin Dashboard')
@@ -56,31 +36,6 @@
     <div class="flex-1 bg-gray-50 rounded-r-lg p-6 min-h-[70vh] flex flex-col">
       <div class="tab-wrapper flex-1">
           
-            
-        
-            {{-- Flash Messages --}}
-            {{-- @if(session('success'))
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded relative" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 text-green-700 hover:text-green-900" onclick="this.parentElement.style.display='none';">
-                        <span class="text-2xl">×</span>
-                    </button>
-                </div>
-            @endif
-            @if($errors->any())
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded relative" role="alert">
-                    <ul class="list-disc pl-5">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 text-red-700 hover:text-red-900" onclick="this.parentElement.style.display='none';">
-                        <span class="text-2xl">×</span>
-                    </button>
-                </div>
-            @endif --}}
-        
-        
             <!-- Toast Notifications (Top Center) -->
             <div class="fixed inset-x-0 top-4 flex flex-col items-center gap-4 z-50 pointer-events-none px-4">
                 @if(session('success'))
@@ -386,111 +341,6 @@
         
 
 </div>
-
-{{-- Tab & Collapse JS --}}
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Tab switching
-        const tabs = document.querySelectorAll('.tab-btn');
-        const contents = document.querySelectorAll('.tab-content');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                contents.forEach(c => c.classList.add('hidden'));
-                tabs.forEach(t => t.classList.remove('bg-indigo-500', 'text-white'));
-                document.getElementById(tab.dataset.tab).classList.remove('hidden');
-                tab.classList.add('bg-indigo-500', 'text-white');
-                localStorage.setItem('adminActiveTab', tab.dataset.tab);
-            });
-        });
-        // Restore active tab
-        const activeTab = localStorage.getItem('adminActiveTab') || 'students';
-        const activeBtn = document.querySelector(`[data-tab="${activeTab}"]`);
-        if (activeBtn) {
-            activeBtn.click();
-        } else {
-            tabs[0].click();
-        }
-        // Collapse toggle
-        const toggles = document.querySelectorAll('.toggle-students');
-        toggles.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const target = document.getElementById(btn.dataset.target);
-                target.classList.toggle('hidden');
-            });
-        });
-    });
-</script> --}}
-
-{{-- Tab & Collapse JS --}}
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const tabs = document.querySelectorAll('.tab-btn');
-        const contents = document.querySelectorAll('.tab-content');
-
-        // Function to activate a tab
-        const activateTab = (tabId) => {
-            // Hide all content
-            contents.forEach(c => c.classList.add('hidden'));
-            // Remove active style from all buttons
-            tabs.forEach(t => t.classList.remove('bg-indigo-500', 'text-white'));
-            // Show selected content
-            document.getElementById(tabId).classList.remove('hidden');
-            // Highlight selected button
-            document.querySelector(`[data-tab="${tabId}"]`).classList.add('bg-indigo-500', 'text-white');
-
-            // Save to localStorage
-            localStorage.setItem('adminActiveTab', tabId);
-
-            // === CLEAN URL: Remove all pagination parameters when switching tabs ===
-            const url = new URL(window.location);
-            ['module_page', 'student_page', 'teacher_page', 'user_page'].forEach(param => {
-                url.searchParams.delete(param);
-            });
-            window.history.replaceState({}, '', url);
-        };
-
-        // Attach click event to each tab
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                activateTab(tab.dataset.tab);
-            });
-        });
-
-        // Restore last active tab on page load
-        let activeTab = localStorage.getItem('adminActiveTab') || 'students';
-
-        // If current URL has a page parameter, prioritize the corresponding tab
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('module_page')) activeTab = 'modules';
-        else if (urlParams.has('student_page')) activeTab = 'students';
-        else if (urlParams.has('teacher_page')) activeTab = 'teachers';
-        else if (urlParams.has('user_page')) activeTab = 'users';
-
-        // Activate the correct tab
-        const activeBtn = document.querySelector(`[data-tab="${activeTab}"]`);
-        if (activeBtn) {
-            activateTab(activeTab);
-        } else {
-            tabs[0].click(); // fallback
-        }
-
-        // Collapse toggle for enrolled students
-        const toggles = document.querySelectorAll('.toggle-students');
-        toggles.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const target = document.getElementById(btn.dataset.target);
-                if (target) {
-                    target.classList.toggle('hidden');
-                    // Optional: change button text
-                    btn.textContent = target.classList.contains('hidden')
-                        ? `${btn.dataset.count || ''} Students Enrolled`
-                        : 'Hide Students';
-                }
-            });
-        });
-    });
-</script> --}}
-
 
 {{-- Tab & Collapse JS --}}
 <script>

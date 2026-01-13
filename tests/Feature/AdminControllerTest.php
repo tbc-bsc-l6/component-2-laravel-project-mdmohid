@@ -60,23 +60,6 @@ class AdminControllerTest extends TestCase
   }
 
   /** @test */
-  // public function admin_can_toggle_module_status()
-  // {
-  //   $module = Module::factory()->create(['active' => true]);
-
-  //   $response = $this->actingAs($this->admin)
-  //     ->patch(route('admin.modules.toggle', $module->id));
-
-  //   $response->assertRedirect();
-
-  //   $this->assertDatabaseHas('modules', [
-  //     'id' => $module->id,
-  //     'active' => false,
-  //   ]);
-  // }
-
-
-  /** @test */
   public function admin_can_toggle_module_status()
   {
     $module = Module::factory()->create(['active' => true]);
@@ -99,7 +82,7 @@ class AdminControllerTest extends TestCase
       'name' => 'John Doe',
       'email' => 'teacher1@example.com',
       'password' => 'password123',
-      'password_confirmation' => 'password123', // ✅ must match controller
+      'password_confirmation' => 'password123', // must match controller
     ]);
 
     $response->assertRedirect();

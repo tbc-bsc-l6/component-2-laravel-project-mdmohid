@@ -1,118 +1,3 @@
-{{-- 
-
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Teacher Dashboard
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    Welcome to Teacher Dashboard!
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout> 
- --}}
-
-{{-- 
-@extends('layouts.app')
-
-@section('title', 'Teacher Dashboard')
-
-@section('content')
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-8">Teacher Dashboard</h1>
-
-        <!-- Flash Messages -->
-        @if (session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <!-- Assigned Modules -->
-        <div class="bg-white shadow rounded-lg overflow-hidden">
-            <div class="px-6 py-4 border-b">
-                <h2 class="text-xl font-semibold">Assigned Modules</h2>
-            </div>
-            <div class="divide-y divide-gray-200">
-                @forelse ($modules as $module)
-                    <div class="px-6 py-4">
-                        <h3 class="font-medium text-lg mb-2">{{ $module->module }}</h3>
-                        <p class="text-sm text-gray-500 mb-4">
-                            Status: <span class="{{ $module->active ? 'text-green-600' : 'text-red-600' }}">{{ $module->active ? 'Available' : 'Unavailable' }}</span>
-                            | Enrolled Students: {{ $module->enrollments->count() }}
-                        </p>
-
-                        <!-- Enrolled Students with Grade -->
-                        @if ($module->enrollments->isNotEmpty())
-                            <h4 class="text-md font-semibold mb-2">Enrolled Students</h4>
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enrolled At</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($module->enrollments as $enrollment)
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $enrollment->student->name }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $enrollment->enrolled_at->format('d M Y') }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                @if ($enrollment->completed_at)
-                                                    <span class="{{ $enrollment->pass ? 'text-green-600' : 'text-red-600' }} font-medium">
-                                                        {{ $enrollment->pass ? 'PASS' : 'FAIL' }}
-                                                    </span>
-                                                    (Completed: {{ $enrollment->completed_at->format('d M Y') }})
-                                                @else
-                                                    Pending
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                @if (!$enrollment->completed_at)
-                                                    <form method="POST" action="{{ route('teacher.grade', $enrollment->id) }}" class="inline">
-                                                        @csrf
-                                                        <input type="hidden" name="pass" value="1">
-                                                        <button type="submit" class="text-green-600 hover:text-green-800 text-sm font-medium mr-4">PASS</button>
-                                                    </form>
-                                                    <form method="POST" action="{{ route('teacher.grade', $enrollment->id) }}" class="inline">
-                                                        @csrf
-                                                        <input type="hidden" name="pass" value="0">
-                                                        <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">FAIL</button>
-                                                    </form>
-                                                @else
-                                                    Graded
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        @else
-                            <p class="text-sm text-gray-500 px-6 py-4">No students enrolled in this module.</p>
-                        @endif
-                    </div>
-                @empty
-                    <p class="px-6 py-8 text-center text-gray-500">No modules assigned to you yet.</p>
-                @endforelse
-            </div>
-        </div>
-    </div>
-@endsection --}}
-
-
-
-
-
-
 
 @extends('layouts.app')
 @section('title', 'Teacher Dashboard')
@@ -126,27 +11,7 @@
     </div>
 
     <!-- Flash Messages -->
-    {{-- @if(session('success'))
-        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded relative" role="alert">
-            {{ session('success') }}
-            <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 text-green-700 hover:text-green-900" onclick="this.parentElement.style.display='none';">
-                <span class="text-2xl">×</span>
-            </button>
-        </div>
-    @endif
-    @if($errors->any())
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded relative" role="alert">
-            <ul class="list-disc pl-5">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 text-red-700 hover:text-red-900" onclick="this.parentElement.style.display='none';">
-                <span class="text-2xl">×</span>
-            </button>
-        </div>
-    @endif --}}
-
+  
     <div class="fixed inset-x-0 top-4 flex flex-col items-center gap-4 z-50 pointer-events-none px-4">
         @if(session('success'))
             <div class="max-w-md w-full bg-green-600 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-4 pointer-events-auto animate-pulse-once">
@@ -351,29 +216,7 @@
             content.classList.remove('hidden');
         }
 
-        // Remove active style from all buttons
-        // document.querySelectorAll('.module-btn').forEach(btn => {
-        //     //btn.classList.remove('bg-indigo-100', 'font-medium', 'border-l-4', 'border-indigo-600');
-        //     btn.classList.remove(
-        //       'bg-indigo-100',
-        //       'font-medium',
-        //       'border-l-4',
-        //       'border-indigo-600',
-        //       'text-indigo-700'
-        //     );
-            
-        // });
-
-        // // Add active style to the clicked button (passed as 'this')
-        // //button.classList.add('bg-indigo-100', 'font-medium', 'border-l-4', 'border-indigo-600');
-        // button.classList.add(
-        //   'bg-indigo-100',
-        //   'font-medium',
-        //   'border-l-4',
-        //   'border-indigo-600',
-        //   'text-indigo-700'
-        // );
-
+        
         document.querySelectorAll('.module-btn').forEach(btn => {
             btn.classList.remove(
                 'bg-indigo-100',

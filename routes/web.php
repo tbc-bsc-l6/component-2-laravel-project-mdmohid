@@ -1,26 +1,4 @@
 <?php
-/*
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php'; */
-
-
-
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
@@ -42,8 +20,6 @@ Route::get('/', function () {
 })->name('home');
 
 
-
-
 // Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
   // Profile routes (from Breeze)
@@ -56,20 +32,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
   //// Admin routes (protected by role middleware)
-  // Route::prefix('admin')->middleware('role:admin')->group(function () {
-  //     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-  //     // Add more admin routes later (add module, etc.)
-  // });
-
-  //   Route::prefix('admin')->middleware('role:admin')->group(function () {
-  //   Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
-  //   // Add this line for creating teachers
-  //   Route::post('/teachers', [AdminController::class, 'storeTeacher'])->name('admin.teachers.store');
-
-  //   // Add other admin routes as needed later
-  //  });
-
   Route::prefix('admin')->middleware('role:admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/modules', [AdminController::class, 'storeModule'])->name('admin.modules.store');
@@ -103,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 //API routes
+//for the API connection using POSTMAN
 
 Route::prefix('api')->group(function () {
 

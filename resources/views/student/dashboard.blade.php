@@ -1,25 +1,3 @@
-{{-- 
-
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Student Dashboard
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    Welcome to Student Dashboard!
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
- --}}
-
-
 
 @extends('layouts.app')
 @section('title', 'Student Dashboard')
@@ -226,41 +204,8 @@
     </div>
 </div>
 
-<!-- Animation for toast -->
-{{-- <style>
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-slide-down {
-        animation: slideDown 0.5s ease-out forwards;
-    }
-</style> --}}
 
-<!-- Simple Tab Switching JS -->
-{{-- <script>
-    function switchTab(tabId) {
-        // Hide all tab contents
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.add('hidden');
-        });
 
-        // Show selected tab
-        document.getElementById('tab-' + tabId).classList.remove('hidden');
-
-        // Update active tab button
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.remove('bg-indigo-100', 'font-medium', 'border-l-4', 'border-indigo-600');
-        });
-        document.querySelector(`[data-tab="${tabId}"]`)
-            .classList.add('bg-indigo-100', 'font-medium', 'border-l-4', 'border-indigo-600');
-    }
-
-    // Show first tab on load
-    document.addEventListener('DOMContentLoaded', () => {
-        switchTab('active');
-    });
-</script> --}}
 
 <script>
     function switchTab(tabId) {
